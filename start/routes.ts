@@ -21,4 +21,4 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/user', "usersController.index");
-Route.post('/user', "usersController.vee");
+Route.post('/user', "usersController.create");

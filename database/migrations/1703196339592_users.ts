@@ -7,13 +7,13 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('email').notNullable()
-      table.string('full_name')
+      table.string('fullName').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      //  */
+      // table.timestamp('created_at', { useTz: true })
+      // table.timestamp('updated_at', { useTz: true })
     })
   }
 
