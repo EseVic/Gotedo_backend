@@ -2,7 +2,7 @@ import Application from '@ioc:Adonis/Core/Application'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import SupportRequest from 'App/Models/SupportRequest'
-
+import User from 'App/Models/User'
 
 export default class SupportRequestsController {
   //get all requests
@@ -11,15 +11,21 @@ export default class SupportRequestsController {
   }
 
   //creating a new support request
-  public async create({ request, response }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
+    const user = await User.findBy('email', request.body().email)
+
+    if (!user) {
+      return response.status(404).json({ error: 'User not found' })
+    }
+
     const reqs = await request.validate({
       schema: schema.create({
-        firstName: schema.string({ trim: true}),
-        lastName: schema.string({ trim: true }),
+        firstname: schema.string({ trim: true }),
+        lastname: schema.string({ trim: true }),
         email: schema.string({ trim: true }),
-        messageTitle: schema.string({ trim: true }),
-        messageText: schema.string({ trim: true }),
-        fileUpload: schema.file({
+        title: schema.string({ trim: true }),
+        fullMessage: schema.string({ trim: true }),
+        file: schema.file({
           size: '3mb',
           extnames: ['jpg', 'png', 'jpeg', 'pdf', 'docx', 'doc'],
         }),
@@ -34,16 +40,17 @@ export default class SupportRequestsController {
 
     const newSupportRequest = new SupportRequest()
 
-    newSupportRequest.firstname = reqs.firstName
-    newSupportRequest.lastname = reqs.lastName
+    newSupportRequest.firstname = reqs.firstname
+    newSupportRequest.lastname = reqs.lastname
     newSupportRequest.email = reqs.email
-    newSupportRequest.messageTitle = reqs.messageTitle
-    newSupportRequest.fullMessage = reqs.messageText
+    newSupportRequest.messageTitle = reqs.title
+    newSupportRequest.fullMessage = reqs.fullMessage
     newSupportRequest.userFile = `file_uploads/${fileName}`
 
-    await newSupportRequest.save()
-    response.status(201)
+    user?.related('supportRequests').save(newSupportRequest)
 
+    response.status(201)
+    // console.log(newSupportRequest.email === user?.email)
     return newSupportRequest
   }
 }
