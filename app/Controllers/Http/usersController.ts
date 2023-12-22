@@ -1,18 +1,30 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
 
 export default class UsersController {
-    public async index(){
-         const users = await User.all()
-         return users
-    }
-    public async create({ request, response }:HttpContextContract){
-        const {email, fullName} = request.body()
-        const user = await User.create({
-            email,
-            fullName
-        })
-        response.status(201)
-        return user
-    }
+  //get all user
+  public async index({}: HttpContextContract) {
+    return User.all()
+  }
+
+  // get user by ID
+  public async show({ params }: HttpContextContract) {
+    return User.findOrFail(params.id)
+  }
+
+  //create a new user
+  public async store({ request, response }: HttpContextContract) {
+    const req = await request.validate({
+      schema: schema.create({
+        fullName: schema.string({ trim: true }),
+        email: schema.string({ trim: true }),
+      }),
+    })
+
+    const newUser = await User.create(req)
+    response.status(201)
+
+    return newUser
+  }
 }

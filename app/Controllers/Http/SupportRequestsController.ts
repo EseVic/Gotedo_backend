@@ -3,6 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import SupportRequest from 'App/Models/SupportRequest'
 
+
 export default class SupportRequestsController {
   //get all requests
   public async index({}: HttpContextContract) {
