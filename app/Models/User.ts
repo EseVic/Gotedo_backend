@@ -10,7 +10,7 @@ export default class User extends BaseModel {
   public email: string
 
   @column()
-  public fullName: string
+  public full_name: string
 
   @hasMany(() => SupportRequest)
   public supportRequests: HasMany<typeof SupportRequest>

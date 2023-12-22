@@ -16,6 +16,9 @@ export default class SupportRequest extends BaseModel {
   public email: string
 
   @column()
+  public userId: number
+
+  @column()
   public messageTitle: string
 
   @column()
