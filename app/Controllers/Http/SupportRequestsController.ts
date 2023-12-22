@@ -11,7 +11,7 @@ export default class SupportRequestsController {
   }
 
   //creating a new support request
-  public async store({ request, response }: HttpContextContract) {
+  public async create({ request, response }: HttpContextContract) {
     const user = await User.findBy('email', request.body().email)
 
     if (!user) {

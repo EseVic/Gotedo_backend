@@ -20,5 +20,13 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/user', "usersController.index");
-Route.post('/user', "usersController.create");
+Route.get('/', () => {
+  return { message: 'Hello Gotedo' }
+})
+
+Route.get('/user', 'UsersController.index')
+Route.get('/user/:id', 'UsersController.getById')
+Route.post('/user', 'UsersController.create')
+
+Route.get('/request', 'SupportRequestsController.index')
+Route.post('/request', 'SupportRequestsController.create')

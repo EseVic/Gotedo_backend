@@ -9,12 +9,12 @@ export default class UsersController {
   }
 
   // get user by ID
-  public async show({ params }: HttpContextContract) {
+  public async getById({ params }: HttpContextContract) {
     return User.findOrFail(params.id)
   }
 
   //create a new user
-  public async store({ request, response }: HttpContextContract) {
+  public async create({ request, response }: HttpContextContract) {
     const req = await request.validate({
       schema: schema.create({
         full_name: schema.string({ trim: true }),
